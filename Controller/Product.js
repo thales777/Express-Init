@@ -27,18 +27,17 @@ exports.getByKey = (req, res, next) => {
 exports.postProduct = (req, res, next) => {
 
     req.checkBody('name').notEmpty().withMessage('Name não pode ser vazio');
-    req.checkBody('price').isDecimal().withMessage('O preço tem que ser Numero');
     req.checkBody('price').notEmpty().withMessage('Price não pode ser vazio');
     req.checkBody('qtdProducts').notEmpty().withMessage('Insira a quantidade de Produtos');
-    req.checkBody('qtdProducts').isDecimal().withMessage('Quantidade de Produtos tem que ser Numero');
-
+    req.checkBody('qtdProducts').isInt().withMessage('Quantidade de Produtos tem que ser Numero');
 
     const err = req.validationErrors();
     if(err){
+        var errors = [];
         err.forEach(element => {
-            res.status(401).write(element.msg + "\n ")
+            errors.push(element.msg);
         });
-        res.end();
+        res.status(401).json(errors)
         
     } else {
 
@@ -46,6 +45,7 @@ exports.postProduct = (req, res, next) => {
         const price = req.body.price;
         const description = req.body.description;
         const qtdProducts = req.body.qtdProducts;
+        const img = req.body.img;
 
         var keyTemp = product.push().key;     
 
@@ -55,7 +55,8 @@ exports.postProduct = (req, res, next) => {
                 name: name,
                 price: price,
                 description: description,
-                qtdProducts: qtdProducts
+                qtdProducts: qtdProducts,
+                img: img
             }
         );
         res.json(req.body);
@@ -68,13 +69,14 @@ exports.editById = (req, res, next) => {
     if (body) {
 
         var keyTemp = product.push().key;
-        product.child(key).set(
+        product.child("key").equalTo(key).set(
             {
                 key: keyTemp,
                 name: body.name,
                 price: body.price,
                 description: body.description,
-                qtdProducts: body.qtdProducts
+                qtdProducts: body.qtdProducts,
+                img: body.img
             }
         );
 
