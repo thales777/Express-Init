@@ -14,9 +14,13 @@ var userRoute = require('./routes/user')
 
 
 //Configurações do App
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(bodyParser.json())
+app.use(bodyParser.json());
+
+app.use(expressValidator());
+
+app.use(require('res-error'));
 
 app.use(function (req, res, next) {
 

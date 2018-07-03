@@ -15,22 +15,31 @@ exports.getAllProducts = (req, res, next) => {
 exports.getByKey = (req, res, next) => {
 
     let key = req.params.key;
+
     product.orderByChild("key").equalTo(key).once("value", value => {
-    res.json(value)
+
+        value.forEach(element => {
+            res.json(element)
+        })
     });
 }
 
 exports.postProduct = (req, res, next) => {
 
-    req.checkBody('name', 'Name não pode ser vazio').notEmpty();
-    req.checkBody('price', 'Price não pode ser vazio').notEmpty();
-    req.checkBody('qtdProducts', 'Insira a quantidade de Produtos').notEmpty();
-    req.checkBody('description', 'Descriçao Invalida').len(0,25);
+    req.checkBody('name').notEmpty().withMessage('Name não pode ser vazio');
+    req.checkBody('price').isDecimal().withMessage('O preço tem que ser Numero');
+    req.checkBody('price').notEmpty().withMessage('Price não pode ser vazio');
+    req.checkBody('qtdProducts').notEmpty().withMessage('Insira a quantidade de Produtos');
+    req.checkBody('qtdProducts').isDecimal().withMessage('Quantidade de Produtos tem que ser Numero');
+
 
     const err = req.validationErrors();
     if(err){
-        console.log(`err: ${JSON.stringify(err)}`);
-        res.render('index.html')
+        err.forEach(element => {
+            res.status(401).write(element.msg + "\n ")
+        });
+        res.end();
+        
     } else {
 
         const name = req.body.name;
@@ -49,7 +58,7 @@ exports.postProduct = (req, res, next) => {
                 qtdProducts: qtdProducts
             }
         );
-        res.json(body);
+        res.json(req.body);
 }}
 
 exports.editById = (req, res, next) => {
@@ -71,10 +80,7 @@ exports.editById = (req, res, next) => {
 
         res.json(body);
 
-    } else {
-        res.send("ERROR" + relacao)
-    }
-
+    } 
 }
 
 exports.deleteById = (req, res, next) => {
