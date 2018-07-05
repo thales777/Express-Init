@@ -11,6 +11,7 @@ var expressValidator = require('express-validator');
 
 var productRoute = require('./Routes/product');
 var userRoute = require('./routes/user')
+var carrinhoRoute = require('./routes/carrinho')
 
 
 //Configurações do App
@@ -45,6 +46,7 @@ app.use(cors());
 
 app.use('/product', productRoute);
 app.use('/user', userRoute);
+app.use('/carrinho', carrinhoRoute);
 
 
 //Setando a App

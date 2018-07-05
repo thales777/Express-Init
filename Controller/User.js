@@ -30,7 +30,7 @@ exports.postUser = (req,res,next) => {
         
         var keyTemp = user.push().key;     
 
-        user.push(
+        user.child(keyTemp).push(
             {
                 key: keyTemp,
                 name: name,
