@@ -30,14 +30,14 @@ exports.postUser = (req,res,next) => {
         
         var keyTemp = user.push().key;     
 
-        user.child(keyTemp).push(
+        user.push(
             {
                 key: keyTemp,
                 name: name,
                 email: email,
                 photo: photo,
                 phone: phone,
-                password: password
+                password: password,
             }
         );
         res.send(req.body)
