@@ -13,6 +13,7 @@
     "express-validation": "^1.0.2",
     "express-validator": "^5.2.0",
     "firebase": "^5.2.0",
+    "firebase-admin": "^5.12.1",
     "http-errors": "~1.6.2",
     "jade": "~1.11.0",
     "joi": "^13.4.0",
